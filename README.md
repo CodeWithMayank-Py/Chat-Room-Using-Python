@@ -9,10 +9,10 @@ A real-time chat room application with video and screen sharing capabilities.
 
 # ScreenShots :
 ...
-![Index Page](./images/screenshot1.png)
-![Login Page](./images/screenshot2.png)
-![Signup Page](./images/screenshot3.png)
-![Dashboard Page](./images/screenshot3.png)
+![Index Page](./images/welcome.png)
+![Login Page](./images/login.png)
+![Signup Page](./images/signup.png)
+![Dashboard Page](./images/dashboard.png)
 
 ...
 
