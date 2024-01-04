@@ -7,6 +7,15 @@ A real-time chat room application with video and screen sharing capabilities.
 - [How to Contribute](#how-to-contribute)
 - [Project Status](#project-status)
 
+# ScreenShots :
+...
+![Index Page](./images/screenshot1.png)
+![Login Page](./images/screenshot2.png)
+![Signup Page](./images/screenshot3.png)
+![Dashboard Page](./images/screenshot3.png)
+
+...
+
 ## Description
 Chat Room App is a project aimed at providing a platform for real-time communication. Users can join chat rooms, initiate video calls, and share their screens seamlessly. The application is developed under Python 3.9.
 
