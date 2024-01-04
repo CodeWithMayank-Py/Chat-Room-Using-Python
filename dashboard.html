@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <!-- Add these to your head section -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI/tZ1a9JJlYszG6oLGMKbR/VTnKtM+2I8r+xu4M=" crossorigin="anonymous"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        header {
+            background-image: linear-gradient(157.5deg, rgb(94, 94, 94) 0%, rgb(94, 94, 94) 14%,rgb(116, 116, 116) 14%, rgb(116, 116, 116) 73%,rgb(139, 139, 139) 73%, rgb(139, 139, 139) 74%,rgb(161, 161, 161) 74%, rgb(161, 161, 161) 75%,rgb(183, 183, 183) 75%, rgb(183, 183, 183) 79%,rgb(206, 206, 206) 79%, rgb(206, 206, 206) 88%,rgb(228, 228, 228) 88%, rgb(228, 228, 228) 100%),linear-gradient(45deg, rgb(94, 94, 94) 0%, rgb(94, 94, 94) 14%,rgb(116, 116, 116) 14%, rgb(116, 116, 116) 73%,rgb(139, 139, 139) 73%, rgb(139, 139, 139) 74%,rgb(161, 161, 161) 74%, rgb(161, 161, 161) 75%,rgb(183, 183, 183) 75%, rgb(183, 183, 183) 79%,rgb(206, 206, 206) 79%, rgb(206, 206, 206) 88%,rgb(228, 228, 228) 88%, rgb(228, 228, 228) 100%),linear-gradient(135deg, rgb(94, 94, 94) 0%, rgb(94, 94, 94) 14%,rgb(116, 116, 116) 14%, rgb(116, 116, 116) 73%,rgb(139, 139, 139) 73%, rgb(139, 139, 139) 74%,rgb(161, 161, 161) 74%, rgb(161, 161, 161) 75%,rgb(183, 183, 183) 75%, rgb(183, 183, 183) 79%,rgb(206, 206, 206) 79%, rgb(206, 206, 206) 88%,rgb(228, 228, 228) 88%, rgb(228, 228, 228) 100%),linear-gradient(90deg, rgb(6, 6, 6),rgb(231, 231, 231)); background-blend-mode:overlay,overlay,overlay,normal;
+            padding: 15px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0px 7px 7px rgba(0, 0, 0, 0.3);
+        }
+
+        #userName {
+            margin: 0;
+        }
+
+        #userIcon {
+            cursor: pointer;
+            width: 100px;
+            height: 40px;
+        }
+
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            top: 60px;
+            right: 30px;
+        }
+
+        .dropdown-content {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style for the centered gradient line */
+        .line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to left, #ce3cc2, transparent, #129eb1);
+            margin: 8px 0;
+            font-weight: bold;
+
+        }
+
+        /* Style for each option in the dropdown */
+        .dropdown-option {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            cursor: pointer;
+            background: linear-gradient(to right, #cd34db, #3cc5e7);
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+        }
+
+        /* Icon styles (adjust as needed) */
+        .option-icon {
+            margin-right: 8px;
+            width: 20px;
+            height: 20px;
+        }
+
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #ecf0f1;
+            background: radial-gradient(circle at 64% 7%, rgba(55, 55, 55,0.06) 0%, rgba(55, 55, 55,0.06) 50%,rgba(228, 228, 228,0.06) 50%, rgba(228, 228, 228,0.06) 100%),radial-gradient(circle at 71% 6%, rgba(182, 182, 182,0.06) 0%, rgba(182, 182, 182,0.06) 50%,rgba(86, 86, 86,0.06) 50%, rgba(86, 86, 86,0.06) 100%),radial-gradient(circle at 94% 76%, rgba(158, 158, 158,0.06) 0%, rgba(158, 158, 158,0.06) 50%,rgba(76, 76, 76,0.06) 50%, rgba(76, 76, 76,0.06) 100%),linear-gradient(90deg, rgb(250, 250, 250),rgb(220, 220, 220));
+        }
+
+        /* Body styles */
+        .body-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: calc(100vh - 60px);
+        }
+
+        .button-container {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .createRoomBtn, .joinRoomBtn {
+            background-color: #3498db;
+            color: #fff;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .createRoomBtn {
+            margin-bottom: auto; /* Adjust as needed */
+        }
+
+        .createRoomBtn:hover,
+        .joinRoomBtn:hover {
+            background-color: #2980b9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3);
+            animation: glow 1s infinite alternate; /* Add glow animation */
+        }
+
+        @keyframes glow {
+            to {
+                box-shadow: 0 0 40px rgba(56, 54, 56, 0.9), 0 0 80px rgba(25, 166, 231, 0.7);
+            }
+        }
+
+
+        .createRoomBtn:active, .joinRoomBtn:active {
+            background-color: #1f618d;
+            transform: scale(0.95);
+            box-shadow: none;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+
+        /* Create Room Modal */
+        #createRoomModal .modal-content {
+            background-image: linear-gradient(35deg, rgba(253, 253, 253, 0.03) 0%, rgba(253, 253, 253, 0.03) 53%,rgba(109, 109, 109, 0.03) 53%, rgba(109, 109, 109, 0.03) 59%,rgba(228, 228, 228, 0.03) 59%, rgba(228, 228, 228, 0.03) 66%,rgba(42, 42, 42, 0.03) 66%, rgba(42, 42, 42, 0.03) 95%,rgba(165, 165, 165, 0.03) 95%, rgba(165, 165, 165, 0.03) 100%),linear-gradient(205deg, rgba(62, 62, 62, 0.03) 0%, rgba(62, 62, 62, 0.03) 31%,rgba(200, 200, 200, 0.03) 31%, rgba(200, 200, 200, 0.03) 41%,rgba(30, 30, 30, 0.03) 41%, rgba(30, 30, 30, 0.03) 47%,rgba(151, 151, 151, 0.03) 47%, rgba(151, 151, 151, 0.03) 60%,rgba(95, 95, 95, 0.03) 60%, rgba(95, 95, 95, 0.03) 100%),linear-gradient(30deg, rgba(7, 7, 7, 0.03) 0%, rgba(7, 7, 7, 0.03) 19%,rgba(63, 63, 63, 0.03) 19%, rgba(63, 63, 63, 0.03) 33%,rgba(175, 175, 175, 0.03) 33%, rgba(175, 175, 175, 0.03) 37%,rgba(244, 244, 244, 0.03) 37%, rgba(244, 244, 244, 0.03) 60%,rgba(177, 177, 177, 0.03) 60%, rgba(177, 177, 177, 0.03) 100%),linear-gradient(90deg, rgb(162, 162, 162),rgb(229, 229, 229));;
+        }
+
+        /* Join Room Modal */
+        #joinRoomModal .modal-content {
+            background-image: linear-gradient(35deg, rgba(253, 253, 253, 0.03) 0%, rgba(253, 253, 253, 0.03) 53%,rgba(109, 109, 109, 0.03) 53%, rgba(109, 109, 109, 0.03) 59%,rgba(228, 228, 228, 0.03) 59%, rgba(228, 228, 228, 0.03) 66%,rgba(42, 42, 42, 0.03) 66%, rgba(42, 42, 42, 0.03) 95%,rgba(165, 165, 165, 0.03) 95%, rgba(165, 165, 165, 0.03) 100%),linear-gradient(205deg, rgba(62, 62, 62, 0.03) 0%, rgba(62, 62, 62, 0.03) 31%,rgba(200, 200, 200, 0.03) 31%, rgba(200, 200, 200, 0.03) 41%,rgba(30, 30, 30, 0.03) 41%, rgba(30, 30, 30, 0.03) 47%,rgba(151, 151, 151, 0.03) 47%, rgba(151, 151, 151, 0.03) 60%,rgba(95, 95, 95, 0.03) 60%, rgba(95, 95, 95, 0.03) 100%),linear-gradient(30deg, rgba(7, 7, 7, 0.03) 0%, rgba(7, 7, 7, 0.03) 19%,rgba(63, 63, 63, 0.03) 19%, rgba(63, 63, 63, 0.03) 33%,rgba(175, 175, 175, 0.03) 33%, rgba(175, 175, 175, 0.03) 37%,rgba(244, 244, 244, 0.03) 37%, rgba(244, 244, 244, 0.03) 60%,rgba(177, 177, 177, 0.03) 60%, rgba(177, 177, 177, 0.03) 100%),linear-gradient(90deg, rgb(162, 162, 162),rgb(229, 229, 229));;
+        }
+
+        /* Profile Modal */
+        #profileModal .modal-content {
+            background-image: radial-gradient(circle at 57% 36%, hsla(263,0%,78%,0.04) 0%, hsla(263,0%,78%,0.04) 10%,transparent 10%, transparent 100%),radial-gradient(circle at 22% 61%, hsla(263,0%,78%,0.04) 0%, hsla(263,0%,78%,0.04) 36%,transparent 36%, transparent 100%),radial-gradient(circle at 68% 97%, hsla(263,0%,78%,0.04) 0%, hsla(263,0%,78%,0.04) 41%,transparent 41%, transparent 100%),radial-gradient(circle at 57% 89%, hsla(263,0%,78%,0.04) 0%, hsla(263,0%,78%,0.04) 30%,transparent 30%, transparent 100%),radial-gradient(circle at 39% 80%, hsla(263,0%,78%,0.04) 0%, hsla(263,0%,78%,0.04) 22%,transparent 22%, transparent 100%),radial-gradient(circle at 88% 71%, hsla(263,0%,78%,0.04) 0%, hsla(263,0%,78%,0.04) 30%,transparent 30%, transparent 100%),linear-gradient(0deg, rgb(255,255,255),rgb(255,255,255));
+        }
+
+        /* Avtar for Profile Picture */
+        #avatarContainer {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #selectedEmoji {
+            font-size: 38px; /* Adjust the font size as needed */
+        }
+
+        .edit-icon {
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        .emoji-list {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 6px 6px rgba(46, 140, 194, 0.7);
+            display: none;
+        }
+
+        .emoji {
+            cursor: pointer;
+            font-size: 100%; /* Set font size to 100% to fit inside the circle */
+            margin: 5px;
+        }
+
+        /* Settings Modal */
+        #settingsModal .modal-content {
+            background-image: linear-gradient(35deg, rgba(253, 253, 253, 0.03) 0%, rgba(253, 253, 253, 0.03) 53%,rgba(109, 109, 109, 0.03) 53%, rgba(109, 109, 109, 0.03) 59%,rgba(228, 228, 228, 0.03) 59%, rgba(228, 228, 228, 0.03) 66%,rgba(42, 42, 42, 0.03) 66%, rgba(42, 42, 42, 0.03) 95%,rgba(165, 165, 165, 0.03) 95%, rgba(165, 165, 165, 0.03) 100%),linear-gradient(205deg, rgba(62, 62, 62, 0.03) 0%, rgba(62, 62, 62, 0.03) 31%,rgba(200, 200, 200, 0.03) 31%, rgba(200, 200, 200, 0.03) 41%,rgba(30, 30, 30, 0.03) 41%, rgba(30, 30, 30, 0.03) 47%,rgba(151, 151, 151, 0.03) 47%, rgba(151, 151, 151, 0.03) 60%,rgba(95, 95, 95, 0.03) 60%, rgba(95, 95, 95, 0.03) 100%),linear-gradient(30deg, rgba(7, 7, 7, 0.03) 0%, rgba(7, 7, 7, 0.03) 19%,rgba(63, 63, 63, 0.03) 19%, rgba(63, 63, 63, 0.03) 33%,rgba(175, 175, 175, 0.03) 33%, rgba(175, 175, 175, 0.03) 37%,rgba(244, 244, 244, 0.03) 37%, rgba(244, 244, 244, 0.03) 60%,rgba(177, 177, 177, 0.03) 60%, rgba(177, 177, 177, 0.03) 100%),linear-gradient(90deg, rgb(162, 162, 162),rgb(229, 229, 229));
+        }
+
+        .privacy-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 5px;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Add this style for the selected radio option */
+        .privacy-option.selected {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        /* Add this style for the title of the radio options */
+        .option-title {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+
+        
+    </style>
+</head>
+
+<body>
+    <!--HEADER PART-->
+    <header>
+        <h1 id="userName">Guest</h1>
+        <!-- User-Icon Dropdown Menu -->
+        <img id="userIcon" src="/svg-icons/avtar-man.svg" alt="User Icon">
+        <div class="dropdown" id="userDropdown">
+            <div class="dropdown-content">
+                <div class="dropdown-option" data-toggle="modal" data-target="#profileModal">
+                    <img src="/svg-icons/user.svg" alt="Profile Icon" class="option-icon">
+                    Profile
+                </div>
+                <div class="line"></div>
+                <div class="dropdown-option" data-toggle="modal" data-target="#settingsModal">
+                    <img src="/svg-icons/settings.svg" alt="Profile Icon" class="option-icon">
+                    Settings
+                </div>
+                <div class="line"></div>
+                <div class="dropdown-option" id="exitOption">
+                    <img src="/svg-icons/log-out.svg" alt="Settings Icon" class="option-icon">
+                    Exit
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!--BODY PART-->
+    <!-- Body content -->
+    <div class="body-container">
+        <div class="button-container">
+            <button type="button" class="createRoomBtn" data-toggle="modal" data-target="#createRoomModal">
+                Create Room
+            </button>
+            <button type="button" class="joinRoomBtn" data-toggle="modal" data-target="#joinRoomModal">
+                Join Room
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Create Room Modal  -->
+    <div class="modal fade" id="createRoomModal" tabindex="-1" role="dialog" aria-labelledby="createRoomModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="createRoomModalTitle">Create Room</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- Your form or content for creating a room goes here -->
+              <form>
+                <!-- Example input fields, customize as needed -->
+                <div class="form-group">
+                  <label for="roomName">Room Name:</label>
+                  <input type="text" class="form-control" id="roomName" placeholder="Enter room name" autocomplete="off" maxlength="15">
+                  <div id="roomNameError" class="error-message"></div>
+                </div>
+                <!-- Password field (optional) -->
+                <div class="form-group">
+                    <label for="roomPassword">Password (optional):</label>
+                    <input type="password" class="form-control" id="roomPassword" placeholder="Enter room password" autocomplete="new-password" readonly>
+                    <div id="passwordError" class="error-message"></div>
+                </div>
+                <!-- Add more form fields as needed -->
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Create Room</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <!-- Join Room Modal -->
+    <div class="modal fade" id="joinRoomModal" tabindex="-1" role="dialog" aria-labelledby="joinRoomModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="joinRoomModalTitle">Join Room</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form for joining a room -->
+                    <form>
+                        <!-- Room ID field -->
+                        <div class="form-group">
+                            <label for="joinRoomId">Room ID:</label>
+                            <input type="text" class="form-control" id="joinRoomId" placeholder="Enter room ID" autocomplete="off" maxlength="15">
+                            <div id="joinRoomIdError" class="error-message"></div>
+                        </div>
+                        <!-- Password field (optional) -->
+                        <div class="form-group">
+                            <label for="joinRoomPassword">Password (optional):</label>
+                            <input type="password" class="form-control" id="joinRoomPassword" placeholder="Enter room password" autocomplete="new-password" maxlength="8">
+                            <div id="joinRoomPasswordError" class="error-message"></div>
+                        </div>
+                        <!-- Add more form fields as needed -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Join Room</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!---------------------------------------------------------------->
+    <!--Dropdown Options-->
+    <!--Profile Dropdown Option-->
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="profileModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalTitle">Profile Options</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Profile options tabs -->
+                    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="editProfile-tab" data-toggle="tab" href="#editProfile" role="tab" aria-controls="editProfile" aria-selected="true">Edit Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="changePassword-tab" data-toggle="tab" href="#changePassword" role="tab" aria-controls="changePassword" aria-selected="false">Change Password</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="activityHistory-tab" data-toggle="tab" href="#activityHistory" role="tab" aria-controls="activityHistory" aria-selected="false">Activity History</a>
+                        </li>
+                    </ul>
+
+                    <!-- Profile options content -->
+                    <div class="tab-content" id="profileTabsContent">
+                        <!-- Edit Profile Tab -->
+                        <div class="tab-pane fade show active" id="editProfile" role="tabpanel" aria-labelledby="editProfile-tab">
+                            <!-- Form for editing profile -->
+                            <form>
+                                <!-- Profile picture upload -->
+                                <div class="form-group">
+                                    <label for="profilePicture">Profile Picture:</label>
+                                    <div id="avatarContainer">
+                                        <!-- Editable avatar -->
+                                        <div id="editableAvatar" class="avatar" onclick="openEmojiList()">
+                                            <!-- Display selected emoji here -->
+                                            <span id="selectedEmoji" class="emoji">😊</span>
+                                        </div>
+                                        <!-- Edit pencil icon -->
+                                        <span class="edit-icon" id="editIcon" onclick="openEmojiList()">✎</span>
+                                        
+                                        <!-- Emoji list (initially hidden) -->
+                                        <div class="emoji-list" id="emojiList">
+                                            <!-- Add your emoji options here -->
+                                            <span class="emoji" onclick="selectEmoji('😊')">😊</span>
+                                            <span class="emoji" onclick="selectEmoji('😎')">😎</span>
+                                            <span class="emoji" onclick="selectEmoji('😁')">😁</span>
+                                            <span class="emoji" onclick="selectEmoji('😉')">😉</span>
+                                            <span class="emoji" onclick="selectEmoji('😶‍🌫️')">😶‍🌫️</span>
+                                            <span class="emoji" onclick="selectEmoji('😮')">😮</span>
+                                            <span class="emoji" onclick="selectEmoji('😴')">😴</span>
+                                            <span class="emoji" onclick="selectEmoji('😵‍💫')">😵‍💫</span>
+                                            <span class="emoji" onclick="selectEmoji('🤠')">🤠</span>
+                                            <span class="emoji" onclick="selectEmoji('🥸')">🥸</span>
+                                            <span class="emoji" onclick="selectEmoji('😈')">😈</span>
+                                            <span class="emoji" onclick="selectEmoji('🤓')">🤓</span>
+                                            <span class="emoji" onclick="selectEmoji('☠️')">☠️</span>
+                                            <span class="emoji" onclick="selectEmoji('👽')">👽</span>
+                                            <span class="emoji" onclick="selectEmoji('🤖')">🤖</span>
+                                            <span class="emoji" onclick="selectEmoji('🐷')">🐷</span>
+                                            <span class="emoji" onclick="selectEmoji('🐶')">🐶</span>
+                                            <span class="emoji" onclick="selectEmoji('🐼')">🐼</span>
+                                            <span class="emoji" onclick="selectEmoji('🧟‍♀️')">🧟‍♀️</span>
+                                            <span class="emoji" onclick="selectEmoji('🎃')">🎃</span>
+                                            <span class="emoji" onclick="selectEmoji('🪬')">🪬</span>
+                                            <span class="emoji" onclick="selectEmoji('☢️')">☢️</span>
+                                            <span class="emoji" onclick="selectEmoji('☣️')">☣️</span>
+                                            <!-- Add more emojis as needed -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Edit name -->
+                                <div class="form-group">
+                                    <label for="editName">Edit Name:</label>
+                                    <input type="text" class="form-control" id="editName" placeholder="Enter new name">
+                                </div>
+                                <!-- Add more fields as needed -->
+                                <button type="button" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+
+                        <!-- Change Password Tab -->
+                        <div class="tab-pane fade" id="changePassword" role="tabpanel" aria-labelledby="changePassword-tab">
+                            <!-- Form for changing password -->
+                            <form>
+                                <!-- Current password -->
+                                <div class="form-group">
+                                    <label for="currentPassword">Current Password:</label>
+                                    <input type="password" class="form-control" id="currentPassword" placeholder="Enter current password">
+                                </div>
+                                <!-- New password -->
+                                <div class="form-group">
+                                    <label for="newPassword">New Password:</label>
+                                    <input type="password" class="form-control" id="newPassword" placeholder="Enter new password">
+                                </div>
+                                <!-- Add more fields as needed -->
+                                <button type="button" class="btn btn-primary">Change Password</button>
+                            </form>
+                        </div>
+
+                        <!-- Activity History Tab -->
+                        <div class="tab-pane fade" id="activityHistory" role="tabpanel" aria-labelledby="activityHistory-tab">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SN</th>
+                                        <th scope="col">Group Name</th>
+                                        <th scope="col">Group ID</th>
+                                        <th scope="col">Creation Date</th>
+                                        <th scope="col">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Replace the following rows with data from the user's activity history -->
+                                    <tr>
+                                        
+                                    </tr>
+                                    <!-- Add more rows as needed -->
+                                </tbody>
+                            </table>
+            
+                            <!-- If no data, show a message -->
+                            <p id="noDataMessage" style="display: none;">No data available.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--Settings Dropdown Option-->
+    <!-- Settings Modal -->
+    <!-- Privacy Settings Modal -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settingsModalTitle">Privacy Settings</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Privacy options -->
+                    <div class="privacy-option" data-mode="online">
+                        <div class="option-title">Online</div>
+                        <input type="radio" name="privacyMode" value="online" hidden>
+                    </div>
+                    <div class="privacy-option" data-mode="offline">
+                        <div class="option-title">Offline</div>
+                        <input type="radio" name="privacyMode" value="offline" hidden>
+                    </div>
+                    <div class="privacy-option" data-mode="dnd">
+                        <div class="option-title">Do Not Disturb (DnD)</div>
+                        <input type="radio" name="privacyMode" value="dnd" hidden>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Js Script file Below--> 
+    <script src="/dashboard.js"></script>
+
+</body>
+
+</html>
